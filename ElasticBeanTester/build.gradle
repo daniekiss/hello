@@ -1,0 +1,130 @@
+apply plugin: 'war'
+apply plugin: 'eclipse'
+apply plugin: 'eclipse-wtp'
+
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath "io.spring.gradle:dependency-management-plugin:0.5.1.RELEASE"
+  }
+}
+apply plugin: "io.spring.dependency-management"
+
+//Source folders:
+sourceSets {
+    main {
+        java {
+            srcDirs = ["src/main/java"]
+        }
+        resources {
+        	srcDirs = ["src/main/resource"]
+        }
+    }
+    test {
+    	java {
+    		srcDirs = ["src/test/java"]
+    	}
+    	resources {
+        	srcDirs = ["src/test/resource"]
+        }
+    }
+}
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+def PROJECT_NICKNAME = 'helloebt'
+
+jar {
+    baseName = PROJECT_NICKNAME
+    version =  '1.0.0'
+}
+
+war.archiveName PROJECT_NICKNAME + '.war'
+
+eclipse {
+	project {
+		natures 'org.springsource.ide.eclipse.gradle.core.nature', 
+				'org.eclipse.jdt.groovy.core.groovyNature', 
+				'org.eclipse.wst.common.project.facet.core.nature'
+				'org.springframework.ide.eclipse.core.springnature'							
+	}
+	classpath {
+		containers 'org.springsource.ide.eclipse.gradle.classpathcontainer'
+	}
+	wtp {
+		facet {
+		  facet name: 'jst.web', version: '3.0'
+		  facet name: 'java', version: '1.8'
+		}
+		component {
+	      contextPath = PROJECT_NICKNAME
+	      deployName = PROJECT_NICKNAME
+	    }
+	}
+}
+
+repositories {
+    mavenCentral()
+	maven {
+		url "http://repository.primefaces.org"
+	}
+	maven {
+		url "http://repository.jboss.org/nexus/content/groups/public"
+	}
+}
+
+dependencyManagement {
+	imports {
+        mavenBom 'io.spring.platform:platform-bom:2.0.2.RELEASE'
+    }
+}
+
+dependencies {
+	//compile files("../regportal-dto-lib/build/libs/regportal-dto-lib-1.0.0.jar")
+	
+	
+	//java servlet
+	compile 'javax.servlet:javax.servlet-api:3.0.1'
+	compile 'javax.enterprise:cdi-api:1.2'
+	
+	// JSF
+	compile 'com.sun.faces:jsf-api:2.2.9'
+    compile 'com.sun.faces:jsf-impl:2.2.9'
+	
+	//Spring
+//	compile 'org.springframework:spring-core'
+	//compile 'org.springframework:spring-context'
+//    compile 'org.springframework:spring-web'
+	//compile "org.springframework:spring-jdbc"
+	//compile "org.springframework.security:spring-security-web:4.0.1.RELEASE"
+	//compile "org.springframework.security:spring-security-config"
+	//compile "org.springframework.webflow:spring-faces"
+	//compile "org.springframework.security:spring-security-taglibs:4.0.1.RELEASE"
+
+	//JDBC
+	//compile "mysql:mysql-connector-java:5.1.34"
+
+	//PrettyFaces URL rewrite
+	//compile 'com.ocpsoft:prettyfaces-jsf2:3.3.3'
+	
+	//Logging
+	//compile 'org.apache.logging.log4j:log4j-api:2.2'
+	//compile 'org.apache.logging.log4j:log4j-core:2.2'
+//	compile "ch.qos.logback:logback-core:1.1.2"
+//	compile "ch.qos.logback:logback-classic:1.1.2"
+//	compile "commons-logging:commons-logging:1.2"
+	
+	//PrimeFaces
+	//compile 'org.primefaces:primefaces:5.2'
+	//compile 'org.primefaces.themes:all-themes:1.0.10'  
+	//compile 'org.primefaces.extensions:primefaces-extensions:3.2.0'
+	
+	//Jackson
+	//compile 'com.fasterxml.jackson.core:jackson-core:2.6.3'
+	//compile 'com.fasterxml.jackson.core:jackson-databind:2.6.3'
+	//compile 'com.fasterxml.jackson.core:jackson-annotations:2.6.3'
+	
+}
